@@ -6,9 +6,8 @@ import (
 	"net/http"
 	"os"
 
-	"echo-lsat/ln"
-
-	"echo-lsat/echolsat"
+	"github.com/DhananjayPurohit/echo-lsat/echolsat"
+	"github.com/DhananjayPurohit/echo-lsat/ln"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"

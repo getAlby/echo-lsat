@@ -1,4 +1,4 @@
-module echo-lsat
+module github.com/DhananjayPurohit/echo-lsat
 
 go 1.18
 

@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/gob"
 
-	"echo-lsat/utils"
+	"github.com/DhananjayPurohit/echo-lsat/utils"
 
 	"github.com/lightningnetwork/lnd/lntypes"
 	"gopkg.in/macaroon.v2"
