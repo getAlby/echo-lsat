@@ -5,7 +5,7 @@ import (
 	"encoding/gob"
 	"fmt"
 
-	macaroonutils "echo-lsat/macaroon"
+	macaroonutils "github.com/getAlby/echo-lsat/macaroon"
 
 	"github.com/lightningnetwork/lnd/lntypes"
 	"gopkg.in/macaroon.v2"
