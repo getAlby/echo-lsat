@@ -1,3 +1,24 @@
+# Echo-LSAT
+
+A middleware for [Echo](https://echo.labstack.com/) framework that uses [LSAT](https://lsat.tech/) (a protocol standard for authentication and paid APIs) and provides handler functions to accept microtransactions before serving ad-free content or any paid APIs.
+
+## Installation
+
+Assuming you've installed Go and Echo
+
+1. Run this:
+
+```
+go get github.com/getAlby/echo-lsat
+```
+
+2. Create `.env` file (refer `.env_example`) and configure `LND_ADDRESS` and `MACAROON_HEX` for LND client or `LNURL_ADDRESS` for LNURL client, `LN_CLIENT_TYPE` (out of LND, LNURL) and `ROOT_KEY` (for minting macaroons).  
+
+## Usage
+
+[This example](https://github.com/getAlby/echo-lsat/blob/main/examples/main.go) shows how to use Echo-LSAT for serving simple JSON response:-
+
+```
 package main
 
 import (
@@ -72,3 +93,8 @@ func main() {
 
 	router.Start("localhost:8080")
 }
+```
+
+## Testing
+
+Run `go test` to run tests.

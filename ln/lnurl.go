@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/DhananjayPurohit/echo-lsat/utils"
+	"github.com/getAlby/echo-lsat/utils"
 
 	decodepay "github.com/fiatjaf/ln-decodepay"
 	"github.com/lightningnetwork/lnd/lnrpc"
