@@ -20,14 +20,20 @@ jobs:
           - name: Checkout code
             uses: actions/checkout@v2
           - name: 'Create env file'
+            env:
+              LND_ADDRESS: ${{ secrets.LND_ADDRESS }}
+              MACAROON_HEX: ${{ secrets.MACAROON_HEX }}
+              LNURL_ADDRESS: ${{ secrets.LNURL_ADDRESS }}
+              ROOT_KEY: ${{ secrets.ROOT_KEY }}
+              TEST_MACAROON: ${{ secrets.TEST_MACAROON }}
+              TEST_PREIMAGE: ${{ secrets.TEST_PREIMAGE }}
             run: |
-              touch .env
-              echo LND_ADDRESS=${{ secrets.LND_ADDRESS }} >> .env
-              echo MACAROON_HEX=${{ secrets.MACAROON_HEX }} >> .env
-              echo LNURL_ADDRESS=${{ secrets.LNURL_ADDRESS }} >> .env
-              echo ROOT_KEY=${{ secrets.ROOT_KEY }} >> .env
-              echo TEST_MACAROON=${{ secrets.TEST_MACAROON }} >> .env
-              echo TEST_PREIMAGE=${{ secrets.TEST_PREIMAGE }} >> .env
+              echo LND_ADDRESS=$LND_ADDRESS >> .env
+              echo MACAROON_HEX=$MACAROON_HEX >> .env
+              echo LNURL_ADDRESS=$LNURL_ADDRESS >> .env
+              echo ROOT_KEY=$ROOT_KEY >> .env
+              echo TEST_MACAROON=$TEST_MACAROON >> .env
+              echo TEST_PREIMAGE=$TEST_PREIMAGE >> .env
               cat .env
           - name: Run tests
             run:  go test -v ./...
