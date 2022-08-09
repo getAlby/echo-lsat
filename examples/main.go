@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/getAlby/echo-lsat/echolsat"
 	"github.com/getAlby/echo-lsat/ln"
@@ -12,6 +14,37 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 )
+
+const SATS_PER_BTC = 100000000
+
+const MIN_SATS_TO_BE_PAID = 1
+
+type FiatRateConfig struct {
+	Currency string
+	Amount   float64
+}
+
+func (fr *FiatRateConfig) FiatToBTCAmountFunc(req *http.Request) (amount int64) {
+	if req == nil {
+		return MIN_SATS_TO_BE_PAID
+	}
+	res, err := http.Get(fmt.Sprintf("https://blockchain.info/tobtc?currency=%s&value=%f", fr.Currency, fr.Amount))
+	if err != nil {
+		return MIN_SATS_TO_BE_PAID
+	}
+	defer res.Body.Close()
+
+	amountBits, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return MIN_SATS_TO_BE_PAID
+	}
+	amountInBTC, err := strconv.ParseFloat(string(amountBits), 32)
+	if err != nil {
+		return MIN_SATS_TO_BE_PAID
+	}
+	amountInSats := SATS_PER_BTC * amountInBTC
+	return int64(amountInSats)
+}
 
 func main() {
 	router := echo.New()
@@ -27,7 +60,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Failed to load .env file")
 	}
-	lnClient, err := echolsat.InitLnClient(&ln.LNClientConfig{
+	lnClientConfig := &ln.LNClientConfig{
 		LNClientType: os.Getenv("LN_CLIENT_TYPE"),
 		LNDConfig: ln.LNDoptions{
 			Address:     os.Getenv("LND_ADDRESS"),
@@ -36,14 +69,12 @@ func main() {
 		LNURLConfig: ln.LNURLoptions{
 			Address: os.Getenv("LNURL_ADDRESS"),
 		},
-	})
-	if err != nil {
-		log.Fatal(err)
 	}
-	lsatmiddleware, err := echolsat.NewLsatMiddleware(&echolsat.EchoLsatMiddleware{
-		Amount:   5,
-		LNClient: lnClient,
-	})
+	fr := &FiatRateConfig{
+		Currency: "USD",
+		Amount:   0.01,
+	}
+	lsatmiddleware, err := echolsat.NewLsatMiddleware(lnClientConfig, fr.FiatToBTCAmountFunc)
 	if err != nil {
 		log.Fatal(err)
 	}
