@@ -32,8 +32,6 @@ jobs:
               echo MACAROON_HEX=$MACAROON_HEX >> .env
               echo LNURL_ADDRESS=$LNURL_ADDRESS >> .env
               echo ROOT_KEY=$ROOT_KEY >> .env
-              echo TEST_MACAROON=$TEST_MACAROON >> .env
-              echo TEST_PREIMAGE=$TEST_PREIMAGE >> .env
               cat .env
           - name: Run tests
             run:  go test -v ./...
