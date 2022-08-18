@@ -96,7 +96,7 @@ func (lsatmiddleware *EchoLsatMiddleware) Handler(next echo.HandlerFunc) echo.Ha
 			c.Set("LSAT", &LsatInfo{
 				Type: LSAT_TYPE_FREE,
 			})
-			return nil
+			return next(c)
 		}
 		//LSAT Header is present, verify it
 		err = lsat.VerifyLSAT(mac, utils.GetRootKey(), preimage)
@@ -106,7 +106,7 @@ func (lsatmiddleware *EchoLsatMiddleware) Handler(next echo.HandlerFunc) echo.Ha
 				Type:  LSAT_TYPE_ERROR,
 				Error: err,
 			})
-			return nil
+			return next(c)
 		}
 		//LSAT verification ok, mark client as having paid
 		c.Set("LSAT", &LsatInfo{
