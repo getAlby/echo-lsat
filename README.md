@@ -1,6 +1,6 @@
 # Echo-LSAT
 
-A middleware for [Echo](https://echo.labstack.com/) framework that uses [LSAT](https://lsat.tech/) (a protocol standard for authentication and paid APIs) and provides handler functions to accept microtransactions before serving ad-free content or any paid APIs.
+A middleware library for [Echo](https://echo.labstack.com/) framework that uses [LSAT](https://lsat.tech/) (a protocol standard for authentication and paid APIs) and provides handler functions to accept microtransactions before serving ad-free content or any paid APIs.
 
 ## Installation
 
