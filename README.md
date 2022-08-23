@@ -109,17 +109,20 @@ func main() {
 				"code":    http.StatusAccepted,
 				"message": "Free content",
 			})
-		} else if lsatInfo.Type == echolsat.LSAT_TYPE_PAID {
+		}
+		if lsatInfo.Type == echolsat.LSAT_TYPE_PAID {
 			return c.JSON(http.StatusAccepted, map[string]interface{}{
 				"code":    http.StatusAccepted,
 				"message": "Protected content",
 			})
-		} else {
-			return c.JSON(http.StatusAccepted, map[string]interface{}{
+		}
+		if lsatInfo.Type == echolsat.LSAT_TYPE_ERROR {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 				"code":    http.StatusInternalServerError,
 				"message": fmt.Sprint(lsatInfo.Error),
 			})
 		}
+		return nil
 	})
 
 	router.Start("localhost:8080")
