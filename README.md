@@ -2,6 +2,14 @@
 
 A middleware library for [Echo](https://echo.labstack.com/) framework that uses [LSAT](https://lsat.tech/) (a protocol standard for authentication and paid APIs) and provides handler functions to accept microtransactions before serving ad-free content or any paid APIs.
 
+The middleware:-
+
+1. Checks the preference of the user whether they need paid content or free content.
+2. Verify the LSAT before serving paid content.
+3. Send macaroon and invoice if the user prefers paid content and fails to present a valid LSAT.
+
+<img src=https://user-images.githubusercontent.com/44242169/186495498-667ef27c-a898-4433-bfe4-ba832ad3041e.png width=700/>
+
 ## Installation
 
 Assuming you've installed Go and Echo
