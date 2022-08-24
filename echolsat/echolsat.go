@@ -8,7 +8,6 @@ import (
 
 	"github.com/getAlby/echo-lsat/ln"
 	"github.com/getAlby/echo-lsat/lsat"
-	"github.com/getAlby/echo-lsat/macaroon"
 	macaroonutils "github.com/getAlby/echo-lsat/macaroon"
 	"github.com/getAlby/echo-lsat/utils"
 
@@ -37,11 +36,11 @@ const (
 )
 
 type LsatInfo struct {
-	Type     string
-	Preimage lntypes.Preimage
-	Mac      *macaroon.MacaroonIdentifier
-	Amount   int64
-	Error    error
+	Type        string
+	Preimage    lntypes.Preimage
+	PaymentHash lntypes.Hash
+	Amount      int64
+	Error       error
 }
 
 type EchoLsatMiddleware struct {
@@ -110,8 +109,11 @@ func (lsatmiddleware *EchoLsatMiddleware) Handler(next echo.HandlerFunc) echo.Ha
 			return next(c)
 		}
 		//LSAT verification ok, mark client as having paid
+		macaroonId, err := macaroonutils.GetMacIdFromMacaroon(mac)
 		c.Set("LSAT", &LsatInfo{
-			Type: LSAT_TYPE_PAID,
+			Type:        LSAT_TYPE_PAID,
+			Preimage:    preimage,
+			PaymentHash: macaroonId.PaymentHash,
 		})
 		return next(c)
 	}
